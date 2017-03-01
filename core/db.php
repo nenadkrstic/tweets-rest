@@ -13,7 +13,7 @@ class Conn{
     private static  $_user = 'root';
     private static  $_pass ='';
 
-    public function getInstance(){
+    public static function getInstance(){
         if(is_null(self::$_instance)){
             self::$_instance = self::$_instance = new PDO("mysql:host=".self::$_host.";dbname=".self::$_dbname."",self::$_user,self::$_pass);
         }

@@ -6,8 +6,8 @@
  * Time: 7:12 AM
  */
 
-require_once "db";
+require_once "db.php";
 
 spl_autoload_register(function($className){
    require_once "classes/{$className}.class.php";
-)};
+});
