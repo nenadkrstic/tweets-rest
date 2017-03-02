@@ -15,8 +15,9 @@ class Tweets
 
 
     private static $_db;
-
-    //Dobavljanje REST API, twiter b92 vesti
+    /*
+    *Dobavljanje REST API, twiter b92 vesti
+    */
     public function getRest()
     {
         $settings = array(
@@ -28,7 +29,7 @@ class Tweets
 
         $url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
         $requestMethod = "GET";
-        $getfield = '?screen_name=@b92vesti&count=10';
+        $getfield = '?screen_name=@b92vesti&count=9';
 
 
         $twitter = new TwitterAPIExchange($settings);
@@ -37,22 +38,33 @@ class Tweets
             ->buildOauth($url, $requestMethod)
             ->performRequest();
 
-
+        //
         return $tweets =  json_decode($response,true);
     }
-
-   //Zapisivanje dobavljenih podataka u bazu, REST api Twiter B92 vesti
+     /*
+     *Zapisivanje dobavljenih podataka u bazu, REST api Twiter B92 vesti
+     */
     public function createRest()
     {
 
         $stmt = self::$_db->prepare("INSERT INTO news (id,news,descript,link,img,url,created_at) VALUES (null,?,?,?,?,?,?)");
         foreach ($this->getRest() as $news){
-          //  print_r($news['entities']['media'][0]);
+            /*
+            *text sadrzi opis vesti i link ka celoj vesti
+            */
             $text = explode('http',$news['text']);
-           $descrip = $text[0];
-                if(isset($text[1])){
-                    $link = 'http'.$text[1];
-                }
+            /*
+            *u nizu na poziciji [0] je opis
+            */
+            $descrip = $text[0];
+
+           if(isset($text[1])){
+               /*
+               *u nizu na poziciji [1] je link
+               *ako link postoji, upisuje se u bazu
+               */
+               $link = 'http'.$text[1];
+           }
 
             $stmt->bindParam(1,$news['user']['name']);
             $stmt->bindParam(2,$descrip);
@@ -63,8 +75,9 @@ class Tweets
             $stmt->execute();
         }
     }
-
-   //inicijalizacija konekcije sa bazom
+     /*
+     *inicijalizacija konekcije sa bazom
+     */
     public static function init()
     {
         self::$_db = Conn::getInstance();

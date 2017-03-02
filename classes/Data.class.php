@@ -11,16 +11,18 @@ class Data
 {
     private static $_db;
 
-
-    //dobavljanje podataka iz baze
+    /*
+    *dobavljanje podataka iz baze
+    */
     public function getData()
     {
         $data= self::$_db->query("SELECT * FROM news ORDER BY id DESC limit 9 ");
         $res = $data->fetchALL(PDO::FETCH_ASSOC);
         return $res;
     }
-
-    //inicijalizacija konekcije sa bazom
+    /*
+    *inicijalizacija konekcije sa bazom
+    */
     public static function init()
     {
         self::$_db = Conn::getInstance();
