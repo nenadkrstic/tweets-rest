@@ -1,0 +1,12 @@
+body{
+    margin: 0;
+}
+
+#wraaper{
+    text-align: center;
+}
+
+#news{
+    min-height: 420px;
+    margin: 5px 0 10px 60px ;
+}

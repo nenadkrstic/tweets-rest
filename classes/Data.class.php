@@ -15,7 +15,7 @@ class Data
     //dobavljanje podataka iz baze
     public function getData()
     {
-        $data= self::$_db->query("SELECT * FROM news ORDER BY id DESC limit 12 ");
+        $data= self::$_db->query("SELECT * FROM news ORDER BY id DESC limit 9 ");
         $res = $data->fetchALL(PDO::FETCH_ASSOC);
         return $res;
     }

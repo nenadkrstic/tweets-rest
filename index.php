@@ -30,7 +30,7 @@ require_once "core/init.php";
 <div class="row">
     <div id = "wraaper" class="container text-center">
         <div class = "jumbotron">
-            <h1>Vesti B92</h1>
+            <img src=' http://pbs.twimg.com/media/C55imK1WMAAk4oo.jpg' class='img-thumbnail'>
         </div>
 
         <?php
@@ -45,10 +45,14 @@ require_once "core/init.php";
             echo '<div id = "news" class="col-md-3 text-center img-thumbnail">';
             echo '<img class="img-responsive" src="https://pbs.twimg.com/profile_images/663689249976287233/EBlfmBGK_normal.png" width="50px">';
             echo "<h4>".$news['news']."</h4>";
-            echo "<h5>".$news['descript']."</h5>";
-            echo "<h6>".$news['created_at']."</h6>";
+            echo "<h5><strong>Vest :</strong>".$news['descript']."</h5>";
             echo "<a href = {$news['url']}>Link B92</a><br>";
-            echo "<a href = {$news['link']}>Prikazi Vise</a><br>";
+            echo "<a href = {$news['link']}>Prikaži više</a><br>";
+            echo "<div class='row'>
+                     <img src={$news['img']} class='img-thumbnail'>
+                 </div>";
+            echo "<h6><strong>Objavljeno :</strong>".$news['created_at']."</h6>";
+
             echo '</div>';
         }
         ?>

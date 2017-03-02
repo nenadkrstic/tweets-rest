@@ -13,7 +13,9 @@ require_once 'api/TwitterAPIExchange.php';
 class Tweets
 {
 
+
     private static $_db;
+
     //Dobavljanje REST API, twiter b92 vesti
     public function getRest()
     {
@@ -26,7 +28,7 @@ class Tweets
 
         $url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
         $requestMethod = "GET";
-        $getfield = '?screen_name=@b92vesti&count=5';
+        $getfield = '?screen_name=@b92vesti&count=10';
 
 
         $twitter = new TwitterAPIExchange($settings);
@@ -38,23 +40,26 @@ class Tweets
 
         return $tweets =  json_decode($response,true);
     }
+
    //Zapisivanje dobavljenih podataka u bazu, REST api Twiter B92 vesti
     public function createRest()
     {
 
-        $stmt = self::$_db->prepare("INSERT INTO news (id,news,descript,link,url,created_at) VALUES (null,?,?,?,?,?)");
+        $stmt = self::$_db->prepare("INSERT INTO news (id,news,descript,link,img,url,created_at) VALUES (null,?,?,?,?,?,?)");
         foreach ($this->getRest() as $news){
-           $text = explode('http',$news['text']);
+          //  print_r($news['entities']['media'][0]);
+            $text = explode('http',$news['text']);
            $descrip = $text[0];
                 if(isset($text[1])){
                     $link = 'http'.$text[1];
                 }
-          // print_r($text[1]);
+
             $stmt->bindParam(1,$news['user']['name']);
             $stmt->bindParam(2,$descrip);
             $stmt->bindParam(3,$link);
-            $stmt->bindParam(4,$news["user"]["url"]);
-            $stmt->bindParam(5,$news['created_at']);
+            $stmt->bindParam(4,$news['entities']['media'][0]['media_url']);
+            $stmt->bindParam(5,$news["user"]["url"]);
+            $stmt->bindParam(6,$news['created_at']);
             $stmt->execute();
         }
     }
